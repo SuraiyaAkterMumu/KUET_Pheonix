@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+#define ll long long int
+#define dd double
+/**Define file I/O **/
+#define f_input freopen("input.txt","r",stdin)
+#define f_output freopen("output.txt","w",stdout)
+/**Define memory set function**/
+#define mem(x,y) memset(x,y,sizeof(x))
+/**Define function and object**/
+#define SQR(x) ((x)*(x))
+#define DIS(a,b,c,d) sqrt(SQR(a-c)+SQR(b-d))
+/**Define constant value**/
+#define pi  (2.0*acos(0.0))///3.141592653589793
+#define pb push_back
+#define mp make_pair
+#define nln printf("\n") ///newline
+#define Case printf("Case %d:",++cno) ///print case
+#define space printf(" ") ///print space
+#define tc int t,cno=0;scanf("%d",&t); ///input test case
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);
+/** priority_queue<int,vector<int>, prioritycom > pq **/
+using namespace std;
+///ordered set
+//#include <ext/pb_ds/assoc_container.hpp>
+//using namespace __gnu_pbds;
+//template<typename T> using orderset = tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+/**Template & structure**/
+//struct prioritycom{bool operator()(const int& l, const int& r){return l < r;}};/// priority queue compare function
+template<typename T>T lcm(T a, T b){return a / __gcd(a,b) * b;}
+template <class T> inline T bigmod(T p,T e,T M){T ret = 1;for(; e > 0; e >>= 1){if(e & 1) ret = (ret * p) % M;p = (p * p) % M;}return (T)ret;}
+template <class string> ll strton(string s){ll won;stringstream ss;ss<<s;ss>>won;return won;}/// convert string to number
+template <class T> string ntostr(T n){stringstream ss;ss << n;return ss.str();}/// convert a number to string
+template<class T> inline T mod(T n,T m){return (n%m+m)%m;}   ///For Positive Negative No.
+template<class T> bool isprime(T n){if(n%2==0){if(n==2)return true;else return false;}T m=sqrt(n);for(T i=3; i<=m; i+=2){if(n%i==0)return false;}return true;}
+bool isvowel(char ch){ch=toupper(ch);if(ch=='A'||ch=='U'||ch=='I'||ch=='O'||ch=='E') return true;return false;}
+dd triangle_area1(dd a, dd b, dd c){dd s=(a+b+c)*0.5; return sqrt(s*(s-a)*(s-b)*(s-c));} ///with s
+dd triangle_area2(dd x1,dd y1, dd x2, dd y2, dd x3, dd y3){ return 0.5*abs(x1*y2+x2*y3+x3*y1-x2*y1-x3*y2-x1*y3);}///with points.must be in anticlockwise
+dd circle_area(dd r ,dd theta) {return (theta*pi*r*r)/(2*pi);} ///area of circle sector with center angle theta.theta needs to be radian.
+dd quad_area(dd x1,dd y1, dd x2, dd y2, dd x3, dd y3, dd x4, dd y4){ return 0.5*abs(x1*y2+x2*y3+x3*y4+x4*y1-x2*y1-x3*y2-x4*y3-x1*y4);}///with points.must be in anticlockwise
+dd cosangle(dd a,dd b, dd c){return acos((dd)(b*b+c*c-a*a)/(dd)(2*b*c));}///calculate angle from three sides of a triangle. returns angle in radian
+///void stow(string s){stringstream ss(s);string x;while(ss>>x){cout<<x<<endl;}} sentence to word
+ll Set(ll N,ll pos){return N=N | (1ll<<pos);}
+ll reset(ll N,ll pos){return N= N & ~(1ll<<pos);}
+bool check(ll N,ll pos){return (bool)(N & (1ll<<pos));}
+#define M 1000000007
+#define MX 100005
+/**
+ll day_of_months[]={31,28,31,30,31,30,31,31,30,31,30,31};
+ll knight_X[ ] = { 1, 1, 2, 2, -1, -1, -2, -2 };
+ll knight_Y[ ] = { 2, -2, 1, -1, 2, -2, 1, -1 };
+ll dx8[]={-1,-1,-1,0,0,1,1,1};
+ll dy8[]={-1,0,1,-1,1,-1,0,1};
+ll dx4[]={-1,0,1,0};
+ll dy4[]={0,1,0,-1};
+**/
+/******************************End******************************/

@@ -1,0 +1,38 @@
+//from Shakil Ahmed's Blog-->http://shakilcompetitiveprogramming.blogspot.com/2016/04/lis-and-variation.html
+
+const int NX = 1000; // লিমিট 
+int input[ NX + 5] , n ;
+void LIS_with_set()
+{
+    set < int > lis ;
+    set < int > :: iterator  it ; 
+    scanf("%d",&n);
+    for( int i = 0 ; i < n ; i++ )
+    {
+        scanf("%d",&input[i]);
+        lis.insert( input[i]);
+        it = lis.find( input[i]);
+        it++;
+        /*if its not the end of lis then removing it position
+        value for better small value on that position */
+        if( it != lis.end()) lis.erase(it); 
+    }
+    cout << lis.size() << endl ;
+}
+
+
+//multiset এবং সাথে upper_bound করে আমরা duplicate value এর জন্যও LIS পেয়ে যেতে পারি ।
+void LIS_with_multiset()
+{
+    multiset < int > lis ;
+    multiset < int > :: iterator  it ;
+    scanf("%d",&n);
+    for( int i = 0 ; i < n ; i++ )
+    {
+        scanf("%d",&input[i]);
+        lis.insert( input[i]);
+        it = lis.upper_bound( input[i]);
+        if( it != lis.end()) lis.erase(it);
+    }
+    cout << lis.size() << endl ;
+}

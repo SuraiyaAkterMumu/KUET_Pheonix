@@ -1,0 +1,251 @@
+******************************************************************
+==============================seieve==============================
+******************************************************************
+#define mx 100000005
+
+int isprime[mx];
+vector<int>prime;
+
+void seive()
+{   
+    for(int i=4; i<mx; i+=2){
+        isprime[i]=1;
+    }
+    isprime[0]=isprime[1]=1;
+    for(int i=3; i*i<mx; i+=2){
+        if(isprime[i]==0){
+            for(int j=i*i; j<mx; j+=i+i)
+                isprime[j]=1;
+        }
+    }prime.push_back(2);
+    for(int i=3;i<mx;i+=2){
+        if(!isprime[i]) prime.push_back(i);
+    }
+}
+
+******************************************************************
+/************************big mod**********************************
+****************************************************************** 
+
+//we can do modular multiplication inverse
+//by it,,if m is prime..-->O(log(p))
+//done using concept of bit manipulation,
+//faster than recurtion
+//source https://forthright48.com/repeated-squaring-method-for-modular-exponentiation/
+
+int bigmod ( int b, int p, int m ) {
+    int res = 1 % m, x = b % m;
+    while ( p ) {
+        if ( p & 1 ) //check if 0th bit is 1
+           res = ( res * x ) % m;
+        x = ( x * x ) % m;
+        p >>= 1; //right shift so that we can work only with 0th bit
+    }
+    return res;
+}
+
+
+
+******************************************************************
+-----------------prime factor------------------------------------
+******************************************************************
+vector<pair<int,int>>prime_fact;
+void  prime_factor(int a)
+{
+    for(int i=0; prime[i]*prime[i]<=a; i++){
+        while(a%prime[i]==0){
+             a=a/prime[i];
+             cnt++;
+        }
+        if(cnt)
+            prime_fact.push_back({prime[i],cnt});
+    }
+    if(a>1){
+        prime_fact.push_back({a,1});
+    }
+
+}
+
+------------------------------------------------------------------ 
+********************how many digit in a factorial***************** 
+------------------------------------------------------------------ 
+
+
+int stirling(int n)//base 10
+{
+         return floor(((n+0.5)*log(n)-n+0.5*log(2*pi))/log(10))+1;
+}
+
+******************************************************************
+--------------------how many digit in factorial------------------
+******************************************************************
+
+//int digits_in_factorial(n, b=10){
+    //return floor( lgammaf(n+1)/log(b) ) + 1;}//number too small
+
+int stirling(n, b=10){
+    return floor( ((n+0.5)*log(n)-n+0.5*log(2*pi))/log(b))+1;}
+					    ///number too large
+******************************************************************
+----------------------------eular phi----------------------------  
+****************************************************************** 
+ll phi[mxN];
+void phi_1_to_mxN() {
+
+    phi[0] = 0;
+    phi[1] = 1;
+    for (int i = 2; i < mxN; i++)
+        phi[i] = i - 1;
+
+    for (int i = 2; i < mxN; i++)
+        for (int j = 2 * i; j < mxN; j += i)
+              phi[j] -= phi[i];
+}
+/*explanation see in --> https://cp-algorithms.com/algebra/phi-function.html
+
+//coprime sum of a number phi[n]/2*n
+*******************************************************************
+****************get power of a number in a factorial***************
+*******************************************************************
+
+int get_power(int p,int q)//p! এর মধ্যে  q এর power কত 
+{
+    int i=q,cnt=0;
+    while(p/i>=1)
+    {
+        int d=p/i;
+        cnt+=d;
+        i*=q;
+    }
+    cout<<"cnt - "<<cnt<<endl;
+    return cnt;
+}
+******************************************************************
+*************************number of divisor************************
+******************************************************************
+int number_of_divisor(int n) ///have to generete prime using seive
+{       
+        long long int j=0,div=1;
+	while(prime[j]*prime[j]<=n)
+         {
+		 
+                long long int d=1;
+                while(n%prime[j]==0)
+                {
+                    n/=prime[j];
+                    d++; 
+                }
+                 
+                div*=d;
+
+                j++;
+            }
+
+            if(n!=1) div*=2; 
+	    return div; 
+} //disisor count with 1 and n itself
+******************************************************************
+**************     segmented seieve     **************************
+******************************************************************
+https://medium.com/%E0%A6%AA%E0%A7%8D%E0%A6%B0%E0%A7%8B%E0%A6%97%E
+0%A7%8D%E0%A6%B0%E0%A6%BE%E0%A6%AE%E0%A6%BF%E0%A6%82-%E0%A6%AA%E0%
+A6%BE%E0%A6%A4%E0%A6%BE/segmented-sieve-number-theory-1af0602dba39
+
+void segmented_seive(lli l,lli r)
+{
+        bool isPrime[r-l+1];
+        mem(isPrime,1);
+        if(l==1)
+            isPrime[0]=false;
+
+        for(lli i=0;prime[i]*prime[i]<=r;i++ )
+        {
+                lli curPrime=prime[i];
+                lli base=curPrime*curPrime;
+                if(base<l)
+                        base=((l+curPrime-1)/curPrime)*curPrime;
+                for(lli j=base;j<=r;j+=curPrime)
+                {
+                        isPrime[j-l]=false;
+                }
+
+        }
+        vector<lli>v;
+         for(lli i=0;i<=r-l;i++)
+         {
+                 if(isPrime[i]==true)
+                        {v.pb(l+i);}
+         }
+}
+******************************************************************
+**********************bit_wise seive******************************
+******************************************************************
+int prime[M/64+4];
+int check(lli n)
+{   return prime[n>>6]&(1<<((n>>1)&31));
+}
+void seter(lli n)
+{   prime[n>>6]|=(1<<((n>>1)&31));
+}
+void bitwise_sieve(lli p)
+{   for(lli i=3; i*i<=p; i+=2)
+    {   if(check(i)==0)
+        {   for(lli j=i*i; j<=p; j+=(2*i))
+                seter(j);
+        }
+    }
+    vprime.pb(2);
+    for(lli i=3; i<=p; i+=2)
+    {   if(check(i)==0)
+        {   vprime.pb(i);
+        }
+    }
+    return;
+}
+******************************************************************
+
+
+pii extended_euclid(lli a,lli b){
+        if(b==0){
+                return pii(1,0);
+        }else{
+                pii d = extended_euclid(b,a%b);
+                return pii(d.ss,d.ff-d.ss*(a/b));
+        }
+}
+
+lli modular_inverse(lli a){
+    pii ret = extended_euclid(a,mod);
+    return ((ret.ff%mod)+mod)%mod;
+
+}
+
+*******************************************************************
+bool pal(int num)
+{
+    string s="";
+    for(int i=0; num>0; i++)
+    {
+        s+=(num%2)+'0';
+        num = num/2;
+    }
+    for(int i=0; i<s.size()/2+1; i++)
+    {
+        if(s[i]!=s[s.size()-1-i])
+            return false;
+
+    }
+    return true;
+}
+******************************************************
+int make_int(string s)//s represent binary form of a  number 
+{
+    int sum=0;
+    reverse(all(s));
+    for(int i=0; i<s.size(); i++)
+    {
+        sum+=(s[i]-'0')*pow(2,i);
+    }
+    return sum;
+}
+********************************************************

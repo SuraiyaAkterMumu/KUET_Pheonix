@@ -1,0 +1,238 @@
+************************************************************ 
+------------------Binary index tree and ------------------
+--------------------euler tree traversal ------------ 
+************************************************************ 
+
+
+
+vector<int>adj[mx];
+lli in[mx],out[mx],temp[2*mx],BITree[2*mx],tax[mx],t=0;
+lli get(int idx){
+    lli sum=0;
+    idx=idx+1;
+    while(idx>0){
+        sum+=BITree[idx];
+        idx-=idx&(-idx);
+    }
+    return sum;
+
+}
+
+void update(int n,int idx,lli val){
+    idx=idx+1;
+    while(idx<=n){
+        BITree[idx]+=val;
+        idx+=idx&(-idx);
+    }
+}
+
+void build_BITree(int n)
+{
+        for(int i=1;i<=n;i++) BITree[i]=0;
+        for(int i=0;i<n;i++){
+                update(n,i,temp[i]);
+        }
+}
+
+void dfs(int u,int parent){///euler tree traversal using dfs
+        in[u]=t++;///first visiting time
+        for(auto child:adj[u]){
+                if(child!=parent) dfs(child,u);
+        }
+        out[u]=t++;///last visiting time
+
+}
+int main(){
+      lli node,query;
+      cin>>n>>q;
+      for(int i=1;i<n;i++){
+           int x,y;
+           cin>>x>>y;
+           adj[x].pb(y);
+           adj[y].pb(x);
+      }
+
+      for(int i=1;i<=n;i++) cin>>tax[i];
+       dfs(1,0);
+      tax[1]=0;
+      for(int i=1;i<=n;i++){///tree ke akta array te convert
+                            /// korlm euler tree traversal algo diye
+            temp[in[i]]=tax[i];
+            temp[out[i]]=-(tax[i]);
+            //cout<<temp[in[i]]<<" "<<temp[out[i]]<<endl;
+      }
+      build_BITree(t);
+
+
+
+************************************************************ 
+------------------segment tree(normal)hakerearth------------ 
+************************************************************ 
+
+ long long int tree[mx*4];
+ long long int tree_min[mx*4];
+ long long int arr[mx];
+ using namespace std;
+void init( int node, int b, int e)
+{
+    if(b==e)
+    {
+        tree[node]=arr[b];
+        tree_min[node]=arr[b];
+        return;
+    }
+     int mid=(b+e)/2;
+    init(node*2,b,mid);
+    init(node*2+1,mid+1,e);
+    tree[node]=tree[node*2]+tree[node*2+1];
+    tree_min[node]=min(tree_min[node*2],tree_min[node*2+1]);
+}
+
+ll int query_sum( int node, int b, int e, int i, int j)
+{
+    if(i>e || j<b)
+        return 0;
+    if(b>=i && e<=j)
+        return tree[node];
+     int mid=(b+e)/2;
+    ll int p1=query_sum(node*2,b,mid,i,j);
+    ll int p2=query_sum(node*2+1,mid+1,e,i,j);
+    return p1+p2;
+}
+
+void update_sum( int node, int b, int e, int i, int newvalue)
+{
+    if(i>e || i<b)
+        return;
+    if(b>=i && e<=i)
+    {
+        tree[node]=newvalue;
+        tree_min[node]=newvalue;
+        return;
+    }
+    int mid=(b+e)/2;
+    update_sum(node*2,b,mid,i,newvalue);
+    update_sum(node*2+1,mid+1,e,i,newvalue);
+    tree[node]=tree[node*2]+tree[node*2+1];
+    tree_min[node]=min(tree_min[node*2],tree_min[node*2+1]);
+}
+
+
+*****************************************************************
+----------------------------segment tree lazy propagation-------- 
+***************************************************************** 
+  
+void updateRange(int node,int start,int end,int l,int r,int val)
+{
+    if(lazy[node] != 0)
+    { 
+         // This node needs to be updated
+        tree[node]+=(end-start+1)*lazy[node]; // Update it
+        if(start != end)
+        {
+            lazy[node*2] += lazy[node]; // Mark child as lazy
+            lazy[node*2+1] += lazy[node]; // Mark child as lazy
+        }
+        lazy[node] = 0;     // Reset it
+    }
+    if(start > end or start > r or end < l) // Current segment is 
+                                   //not within range [l, r]
+        return;
+    if(start >= l and end <= r)
+    {
+                                                
+        tree[node] += (end - start + 1) * val;  
+        if(start != end)
+        {
+                                       // Not leaf node
+            lazy[node*2] += val;
+            lazy[node*2+1] += val;
+        }
+        return;
+    }
+    int mid = (start + end) / 2;
+    updateRange(node*2, start, mid, l, r, val);        
+    updateRange(node*2 + 1, mid + 1, end, l, r, val);  
+    tree[node] = tree[node*2] + tree[node*2+1];        
+}
+
+int queryRange(int node, int start, int end, int l, int r)
+{
+    if(start > end or start > r or end < l)
+        return 0;         // Out of range
+    if(lazy[node] != 0)
+    {
+                               // This node needs to be updated
+        tree[node] += (end - start + 1) * lazy[node];// Update it
+        if(start != end)
+        {
+            lazy[node*2] += lazy[node]; // Mark child as lazy
+            lazy[node*2+1] += lazy[node]; // Mark child as lazy
+        }
+        lazy[node] = 0;                 // Reset it
+    }
+    if(start >= l and end <= r)    
+        return tree[node];
+    int mid = (start + end) / 2;
+    int p1 = queryRange(node*2, start, mid, l, r);
+    int p2 = queryRange(node*2 + 1, mid + 1, end, l, r); 
+    return (p1 + p2);
+}
+******************************************************************
+***************** segment tree lazy propagation******************* 
+******************************************************************
+struct info
+{
+    lli prop,sum;
+} tree[mx*4];
+int a[mx];
+void init(int node,int  b, int e)
+{
+    if(b==e)
+    {
+        tree[node].sum=a[b];
+        tree[node].prop=0;
+        return;
+    }
+    int mid=(b+e)/2;
+    init(node*2,b,mid);
+    init(node*2+1,mid+1,e);
+    tree[node].sum=tree[node*2].sum+tree[node*2+1].sum;
+    tree[node].prop=tree[node*2].prop+tree[node*2+1].prop;
+}
+
+void update(int node,int b,int e,int i,int j,int x)
+{
+    if(i>e || j<b)
+        return;
+    if(b>=i && e<=j)
+    {
+         tree[node].sum=((e-b+1)*x)-tree[node].sum;
+        tree[node].prop+=x;
+        return;
+    }
+    int mid=(b+e)/2;
+    update(node*2,b,mid,i,j,1);
+    update(node*2+1,mid+1,e,i,j,1);
+
+    tree[node].sum=tree[node*2].sum+tree[node*2+1].sum+
+                                       (e-b+1)*tree[node].prop;
+
+}
+int query(int node,int b,int e,int i,int j,int carry=0)
+{
+
+    if(i>e || j<b)
+        return 0;
+    if(b>=i && e<=j)
+        {
+                //cout<<"node"<<node<<endl;
+                return  tree[node].sum+carry*(e-b+1);
+        }
+    int left=node<<1;
+    int right=(node<<1)+1;
+    int mid=(b+e)>>1;
+     int p1=query(left,b,mid,i,j,tree[node].prop+carry);
+     int p2=query(right,mid+1,e,i,j,tree[node].prop+carry);
+     return p1+p2;
+}

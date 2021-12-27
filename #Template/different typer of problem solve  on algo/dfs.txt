@@ -1,0 +1,217 @@
+#include<bits/stdc++.h>
+#include<iostream>
+#include<math.h>
+#include<vector>
+#include<set>
+#include<queue>
+#include<algorithm>
+#include<cstring>    //for memset
+using namespace std;
+
+#define lli              long long int
+#define ull              unsigned long long
+#define ld               long double
+#define pi               acos(-1)
+#define pb               push_back
+#define pbk              pop_back
+#define mp               make_pair
+#define ff               first
+#define ss               second
+#define pii              pair<lli,lli>
+#define gcd(a,b)         __gcd(a,b)
+#define lcd(a,b)         (a/gcd(a,b))*b
+#define inf              10000000000000000+7
+#define M                1000000002
+#define MINI             -1000000003
+#define READ             freopen("in.txt","r",stdin);
+#define WRITE            freopen("outer.txt","w",stdout);
+#define sort(t)          sort(t.begin(),t.end())
+#define mem(a,b)         memset(a,b,sizeof a)
+#define sf               scanf
+#define pf               printf
+#define cs(p)            printf("Case %d: ", ++(p))
+#define mx 30005
+lli visited[mx];
+lli visited1[mx];
+lli visited2[mx];
+lli dis[mx]={0},dis1[mx]={0},dis2[mx]={0},cnt;
+vector<pii>adj[mx];
+int parent[mx];
+inline lli find_parent(lli v)
+{
+    if(v==parent[v])
+        return v;
+    return parent[v]=find_parent(parent[v]);
+}
+void unionm(lli a,lli b)
+{
+    a=find_parent(a);
+    b=find_parent(b);
+    if(a!=b)
+        parent[b]=a;
+    return;
+}
+
+void dfs(lli start)
+{
+
+    visited[start]=1;
+    visited1[start]=1;
+    visited2[start]=1;
+    //cout<<start<<" ";
+    for(lli i=0; i<adj[start].size(); i++)
+    {
+        int v = adj[start][i].first;
+        int cost=adj[start][i].second;
+
+        if(!visited[v])
+        {
+            dis[v]=cnt+cost;
+            //cout<<"dis["<<v<<"]"<<dis[v]<<endl;
+            cnt=dis[v];
+            visited[v] = 1;
+            visited1[v]=1;
+            visited2[v]=1;//cout<<"Cost "<<cost<<endl;
+            dfs(v);
+        }
+    }
+}
+void dfs1(lli start)
+{
+
+
+    visited1[start]=1;
+    visited[start]=1;
+    //cout<<start<<" ";
+    for(int i=0; i<adj[start].size(); i++)
+    {
+        int v = adj[start][i].first;
+        int cost=adj[start][i].second;
+
+        if(!visited1[v])
+        {
+            dis1[v]=cnt+cost;
+            // cout<<"dis1["<<v<<"]"<<dis1[v]<<endl;
+            cnt=dis1[v];
+            visited[v] = 1;
+            visited1[v]=1;//cout<<"Cost1 "<<cost<<endl;
+            dfs1(v);
+        }
+    }
+}
+void dfs2(lli start)
+{
+
+    visited[start]=1;
+    visited2[start]=1;
+    //cout<<start<<" ";
+    for(int i=0; i<adj[start].size(); i++)
+    {
+        int v = adj[start][i].first;
+        int cost=adj[start][i].second;
+
+        if(!visited2[v])
+        {
+            dis2[v]=(cnt+cost);
+            //cout<<"dis2["<<v<<"]"<<dis2[v]<<endl;
+            cnt=dis2[v];
+            visited[v] = 1;
+            visited2[v] = 1;
+            //cout<<"Cost2 "<<cost<<endl;
+            dfs2(v);
+        }
+    }
+}
+
+int main()
+{
+    int test;
+    sf("%d",&test);
+    for(int t=1; t<=test; t++)
+    {
+
+        mem(visited,0);
+        mem(visited1,0);
+        mem(visited2,0);
+        mem(dis,0);
+        mem(dis1,0);
+        mem(dis2,0);
+
+        for(lli i=1; i<30005; i++)
+            parent[i]=i;
+
+        int edge,node;
+        sf("%d %d",&node,&edge);
+        for(int i=1; i<=edge; i++)
+        {
+            int u,v,w;
+            cin>>u>>v>>w;
+            unionm(u,v);
+            adj[u].pb({v,w});
+            adj[v].pb({u,w});
+
+
+        }
+        for(int i=1; i<=node; i++)
+        {
+
+            if(adj[i].size()==1 && visited[i]!=1)
+            {
+                cnt=0;
+                dfs(i);
+            }
+        }
+        for(int i=1; i<=node; i++)
+        {
+            if(adj[i].size()==2 && visited[i]!=1)
+            {
+
+                int uu=adj[i][1].ff;
+                int ww=adj[i][1].ss;
+                adj[i].pop_back();
+                cnt=0;
+                dfs1(i);
+                adj[i].pop_back();
+                adj[i].push_back({uu,ww});
+                cnt=0;
+                dfs2(i);
+
+            }
+        }
+
+        int query;
+        sf("%d",&query);
+
+        pf("Case %d:\n",t);
+        while(query--)
+        {
+
+            int u,v;
+            sf("%d %d",&u,&v);
+            int a=find_parent(u);
+            int b=find_parent(v);
+            if(a!=b)
+                pf("-1");
+            else
+            {
+                if(abs(dis[u]-dis[v]))
+                {
+                    lli temp=abs(dis[u]-dis[v]);
+                    pf("%lld",temp);
+                }
+
+                else
+                {
+
+                    lli temp=min(abs(dis1[u]-dis1[v]),(min(dis1[u],dis2[u])+min(dis1[v],dis2[v])));
+                    pf("%lld",temp);
+                }
+            }
+            pf("\n");
+
+        }
+        for(int i=0;i<30005;i++)
+                adj[i].clear();
+    }
+
+}

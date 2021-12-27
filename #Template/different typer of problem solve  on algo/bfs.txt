@@ -1,0 +1,115 @@
+problem aktu describe korte hbe
+
+
+
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+#define loop(i,n) for(int i=0;i<n;i++)
+#define mx 10005
+#define cs(p)       	    printf("Case %d: ", ++(p))
+vector<int>adj[mx];
+int visited[mx];
+int cost[mx];
+int cnt;
+long long sum;
+
+
+//void dfs(int source)
+//{
+//     cout<<"DFS"<<endl;
+//    cnt++;
+//    sum+=cost[source];
+//    for(int i=0;i<adj[source].size();i++)
+//    {
+//        int v=adj[source][i];
+//        if(visited[v]==0)
+//        {
+//            visited[v]=1;
+//            dfs(v);
+//        }
+//    }
+//}
+
+
+void bfs(int source)
+{
+
+//    cout<<"bfs"<<endl;
+    visited[source]=1;
+     cnt++;
+//                     cout<<"cost "<<cost[source]<<endl;
+     sum+=cost[source];
+    queue<int>q;
+    q.push(source);
+    while(!q.empty())
+    {
+        int u=q.front();
+        q.pop();
+        for(int i=0;i<adj[u].size();i++)
+        {
+           int  v=adj[u][i];
+
+            if(visited[v]==0)
+            {
+                visited[v]=1;
+                q.push(v);
+                cnt++;
+//                cout<<"cost "<<cost[v]<<endl;
+                sum+=cost[v];
+            }
+        }
+    }
+}
+
+
+int main()
+{
+     int t;
+     cin>>t;
+     int c=0;
+     while(t--)
+     {
+         memset(visited,0,sizeof(visited));
+         memset(cost,0,sizeof(cost));
+         int n,m;
+         cin>>n>>m;
+         int x=0;
+         long long s=0;
+         for(int i=1;i<=n;i++)
+         {
+             cin>>cost[i];
+             s+=cost[i];
+         }
+         int pabe=s/n;
+         for(int i=0;i<m;i++)
+         {
+             int u,v;
+             cin>>u>>v;
+             adj[u].push_back(v);
+             adj[v].push_back(u);
+         }
+         for(int i=1;i<=n;i++)
+         {
+             if(!visited[i])
+             {
+                 cnt=0;
+                 sum=0;
+                 bfs(i);
+                 int p=sum/cnt;
+                 if(p*cnt!=sum || pabe!=p) {x=0;cs(c);printf("No\n");break;}
+                 else {x=1; }
+
+             }
+         }
+//         cout<<"X"<<x<<endl;
+         if(x==1) {cs(c);printf("Yes\n");}
+
+         for(int i=0;i<n;i++)
+            adj[i].clear();
+     }
+
+
+}

@@ -13,7 +13,9 @@ KUET_
 
 1.Khadiza Sarwar Moury 
 2.01710367668
-3.khadiza.sarwar.moury@gmail.com
+3.XL
+4.1607010
+5.khadiza.sarwar.moury@gmail.com
 
 abdulaziz@cse.kuet.ac.bd
 01521453235

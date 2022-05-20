@@ -47,8 +47,7 @@ typedef long long ll;
 const int maxn = 1e2 + 14, lg = 15;
 
 /*
-  ######################################################################
-  #######################   THE   BIG   INT   ##########################
+############ start from here ##########
 */
 const int base = 1000000000;
 const int base_digits = 9; 

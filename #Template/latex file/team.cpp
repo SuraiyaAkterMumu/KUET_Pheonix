@@ -53,7 +53,7 @@ template<class T> using o_set = tree<T, null_type,less<T>, rb_tree_tag,tree_orde
 //const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
 //const int fx[] = {2, -2, 1, 1, -1, -1} ;
 //const int fy[] = {0,0,1,-1,1,-1};             // Hexagonal Direction
- //int day[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}; 
+
 /*------------------------------------------------*/
 
 int main(){

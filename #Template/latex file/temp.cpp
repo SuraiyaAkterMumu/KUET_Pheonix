@@ -58,11 +58,10 @@ using namespace std;
 #define all(v)           v.begin(),v.end()
 #define SZ(a)            (int)a.size()
 /* #### check these paramters before submit ##### */
-#define mxN                  100005
-#define inf              10000000000000000
-#define mod              1000000007
-#define mini            -1000000003
-
+const int INF = 0x3f3f3f3f;/* useful for memset*/
+const ll LL_INF = 0x3f3f3f3f3f3f3f3f;
+const int mx = 1e5+5; /*CHECK here for every problem*/
+const int mod = 1e9+7
 /*----------------------Graph Moves----------------*/
 ///const int fx[]={+1,-1,+0,+0};
 ///const int fy[]={+0,+0,+1,-1};

@@ -1,4 +1,6 @@
-KUET_
+KUET_Phoenix
+
+
 1.Rifah Tasnim Haque Promi
 2.rtasnim56@gmail.com 
 3.01750387049
@@ -8,14 +10,10 @@ KUET_
 1.Suraiya Akter Mumu
 2.suraiyaaktermumu26@gmail.com
 3.01963608262
-4.medium
+4.M
 5.1707100
 
-1.Khadiza Sarwar Moury 
-2.01710367668
-3.XL
-4.1607010
-5.khadiza.sarwar.moury@gmail.com
+
 
 abdulaziz@cse.kuet.ac.bd
 01521453235

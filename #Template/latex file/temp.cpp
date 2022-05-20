@@ -57,7 +57,7 @@ using namespace std;
 #define ss               second
 #define all(v)           v.begin(),v.end()
 #define SZ(a)            (int)a.size()
-/* #### check this paramter before submit ##### */
+/* #### check these paramters before submit ##### */
 #define mxN                  100005
 #define inf              10000000000000000
 #define mod              1000000007
